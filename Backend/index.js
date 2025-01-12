@@ -14,11 +14,25 @@ const io = new Server(server, {
 
 // Redis setup
 const redis = new Redis({
-  host: "127.0.0.1", // Update for production Redis
-  port: 6379,
+  host: '127.0.0.1',  // Localhost IP
+  port: 6379,         // Redis default port
+});
+
+redis.on('connect', () => {
+  console.log('Connected to Redis');
+});
+
+redis.on('error', (err) => {
+  console.error('Redis error:', err);
 });
 const pub = new Redis(); // Publisher
 const sub = new Redis(); // Subscriber
+
+// const redis = new Redis({
+//   host: process.env.REDIS_HOST, // Set this in environment variables
+//   port: process.env.REDIS_PORT || 6379,
+//   password: process.env.REDIS_PASSWORD  // Optional
+// });
 
 // Monitor Redis connections
 redis.on("connect", () => console.log("Connected to Redis!"));
